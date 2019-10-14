@@ -1,3 +1,10 @@
+/*
+ * @Description: Description
+ * @Author: Yongchao Wang
+ * @Date: 2019-10-05 22:34:27
+ * @LastEditors: Yongchao Wang
+ * @LastEditTime: 2019-10-14 09:06:17
+ */
 import React, { Component } from 'react'
 import { Text, View, ScrollView, Image, TouchableOpacity, StyleSheet } from 'react-native'
 
@@ -9,7 +16,6 @@ export class Focus extends Component {
 
         }
     }
-
     render() {
         return (
             <View>
@@ -17,7 +23,7 @@ export class Focus extends Component {
                     {
                         this.props.data.map((item, index) => {
                             return (
-                                <View style={styles.view}>
+                                <View key={index} style={styles.view}>
                                     <Image style={styles.image} source={{ uri: 'https://facebook.github.io/react-native/img/tiny_logo.png' }}></Image>
                                     <Text style={styles.font1}>名字</Text>
                                     <Text style={styles.font2}>角色</Text>

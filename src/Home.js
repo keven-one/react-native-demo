@@ -1,12 +1,28 @@
+/*
+ * @Description: Description
+ * @Author: Yongchao Wang
+ * @Date: 2019-09-29 16:15:45
+ * @LastEditors: Yongchao Wang
+ * @LastEditTime: 2019-10-14 13:19:11
+ */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, Modal } from 'react-native';
+import { View, Text, StyleSheet, Image, FlatList, Modal, NativeEventEmitter, NativeModules } from 'react-native';
 import StatusView from './components/StatusView'
-import Swiper from 'react-native-swiper'
+// import Swiper from 'react-native-swiper'
+import Swiper from './components/home/Switch'
+
 import GlobalStyles from './utils/GlobalStyles'
 import Focus from '.././src/components/home/Focus'
 import PicTextCell from '.././src/components/home/PicTextCell'
 import { NavigationActions } from 'react-navigation';
-
+const { RNTEventManager } = NativeModules;
+const calendarManagerEmitter = new NativeEventEmitter(RNTEventManager);
+const subscription = calendarManagerEmitter.addListener(
+    'selectItem',
+    (reminder) => {
+        console.log(reminder)
+    }
+);
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -16,7 +32,9 @@ class Home extends Component {
         };
 
     }
-
+    componentWillUnmount() {
+        subscription.remove()
+    }
 
 
     render() {
@@ -34,11 +52,12 @@ class Home extends Component {
                     }
                 </View>
 
-                <FlatList data={["1", "2", "3", "1", "2", "3", "1", "2", "3"]} renderItem={(item) => {
+                <FlatList data={["1", "2", "3", "11", "12", "13", "21", "22", "23"]} keyExtractor={(item, index) => { item.id }} renderItem={(item) => {
                     switch (item.index) {
                         case 0:
                             return (<View style={styles.swiperView}>
-                                <Swiper style={styles.swiper} height={200} width={GlobalStyles.window_width}>
+                                <Swiper style={{ flex: 1 }} urlArray={['https://facebook.github.io/react-native/img/tiny_logo.png', 'https://facebook.github.io/react-native/img/tiny_logo.png', 'https://facebook.github.io/react-native/img/tiny_logo.png']} selectItemBlock={this.selectItemBlock}></Swiper>
+                                {/* <Swiper style={styles.swiper} height={200} width={GlobalStyles.window_width}>
                                     <View style={styles.slide}>
                                         <Image style={styles.image} style={{ width: GlobalStyles.window_width - 40, height: 130 }}
                                             source={{ uri: 'https://facebook.github.io/react-native/img/tiny_logo.png' }}></Image>
@@ -53,7 +72,7 @@ class Home extends Component {
                                         <Image style={styles.image} style={{ width: GlobalStyles.window_width - 40, height: 130 }}
                                             source={{ uri: 'https://facebook.github.io/react-native/img/tiny_logo.png' }}></Image>
                                     </View>
-                                </Swiper>
+                                </Swiper> */}
                             </View>)
                             break;
                         case 1:
@@ -85,6 +104,9 @@ class Home extends Component {
         })
     }
 
+    selectItemBlock = (index) => {
+        console.log(index)
+    }
     showPic(index) {
         const navigateAction = NavigationActions.navigate({
             routeName: 'ImagePickViewer',
@@ -118,6 +140,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         marginLeft: 20,
         marginRight: 20,
+        marginBottom: 10
     },
     swiper: {
         marginTop: 20,

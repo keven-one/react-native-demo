@@ -1,3 +1,10 @@
+/*
+ * @Description: Description
+ * @Author: Yongchao Wang
+ * @Date: 2019-10-08 14:28:58
+ * @LastEditors: Yongchao Wang
+ * @LastEditTime: 2019-10-08 14:28:58
+ */
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import RNIcon from "../RNIcon";
@@ -41,7 +48,7 @@ export default class PicTextCell extends Component {
                     {
                         this.props.imageurls.map((item, index) => {
                             return (
-                                <TouchableOpacity onPress={this.press.bind(this, index)}>
+                                <TouchableOpacity key={index} onPress={this.press.bind(this, index)}>
                                     <Image style={styles.pic} source={{ uri: 'https://facebook.github.io/react-native/img/tiny_logo.png' }} ></Image>
                                 </TouchableOpacity>
                             )
